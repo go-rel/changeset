@@ -1,6 +1,6 @@
 package changeset
 
-// Error defines information about grimoire's error.
+// Error defines information about form's error.
 type Error struct {
 	Message string `json:"message"`
 	Field   string `json:"field,omitempty"`

@@ -15,12 +15,14 @@ func PutDefault(ch *Changeset, field string, value interface{}, opts ...Option) 
 	}
 	options.apply(opts)
 
-	if typ, exist := ch.types[field]; exist {
-		valTyp := reflect.TypeOf(value)
-		if valTyp.ConvertibleTo(typ) {
+	if typ, exist := ch.doc.Type(field); exist {
+		rt := reflect.TypeOf(value)
+		if rt.ConvertibleTo(typ) {
+			existingValue, _ := ch.doc.Value(field)
+
 			if (ch.params == nil || !ch.params.Exists(field)) && // no input
 				ch.changes[field] == nil && // no change
-				isZero(ch.values[field]) { // existing value is zero value
+				isZero(existingValue) { // existing value is zero value
 				ch.changes[field] = value
 			}
 			return

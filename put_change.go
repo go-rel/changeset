@@ -15,14 +15,14 @@ func PutChange(ch *Changeset, field string, value interface{}, opts ...Option) {
 	}
 	options.apply(opts)
 
-	if typ, exist := ch.types[field]; exist {
+	if typ, exist := ch.doc.Type(field); exist {
 		if value != (interface{})(nil) {
-			valTyp := reflect.TypeOf(value)
-			if valTyp.Kind() == reflect.Ptr {
-				valTyp = valTyp.Elem()
+			rt := reflect.TypeOf(value)
+			if rt.Kind() == reflect.Ptr {
+				rt = rt.Elem()
 			}
 
-			if valTyp.ConvertibleTo(typ) {
+			if rt.ConvertibleTo(typ) {
 				ch.changes[field] = value
 				return
 			}

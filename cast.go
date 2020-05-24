@@ -7,6 +7,7 @@ import (
 
 	"github.com/Fs02/form/params"
 	"github.com/Fs02/grimoire/schema"
+	"github.com/Fs02/rel"
 )
 
 // CastErrorMessage is the default error message for Cast.
@@ -27,14 +28,16 @@ func Cast(data interface{}, params params.Params, fields []string, opts ...Optio
 	} else if existingCh, ok := data.(*Changeset); ok {
 		ch = existingCh
 	} else {
-		ch = &Changeset{}
-		ch.params = params
-		ch.changes = make(map[string]interface{})
-		ch.values, ch.types, ch.zero = mapSchema(data, true)
+		// TODO: ch zero,
+		ch = &Changeset{
+			doc:     rel.NewDocument(data, true),
+			params:  params,
+			changes: make(map[string]interface{}),
+		}
 	}
 
 	for _, field := range fields {
-		typ, texist := ch.types[field]
+		typ, texist := ch.doc.Type(field)
 
 		if !params.Exists(field) || !texist {
 			continue
@@ -46,7 +49,7 @@ func Cast(data interface{}, params params.Params, fields []string, opts ...Optio
 		}
 
 		if change, valid := params.GetWithType(field, typ); valid {
-			value, vexist := ch.values[field]
+			value, vexist := ch.doc.Value(field)
 
 			if (typ.Kind() == reflect.Slice || typ.Kind() == reflect.Array) || (ch.zero && change != nil) || (!vexist && change != nil) || (vexist && value != change) {
 				ch.changes[field] = change

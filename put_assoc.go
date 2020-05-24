@@ -1,8 +1,9 @@
 package changeset
 
 import (
-	"reflect"
 	"strings"
+
+	"github.com/Fs02/rel"
 )
 
 // PutAssocErrorMessage is the default error message for PutAssoc.
@@ -14,21 +15,22 @@ func PutAssoc(ch *Changeset, field string, value interface{}, opts ...Option) {
 		message: PutAssocErrorMessage,
 	}
 	options.apply(opts)
-	if typ, exist := ch.types[field]; exist {
-		if typ.Kind() == reflect.Struct {
-			valTyp := reflect.TypeOf(value)
-			if valTyp == reflect.TypeOf(ch) {
+
+	ok := false // TODO: need adjustment from rel
+	if assoc := ch.doc.Association(field); ok {
+		if assoc.Type() == rel.HasMany {
+			if _, ok := value.([]*Changeset); ok {
 				ch.changes[field] = value
 				return
 			}
-		} else if typ.Kind() == reflect.Slice && typ.Elem().Kind() == reflect.Struct {
-			valTyp := reflect.TypeOf(value)
-			if valTyp.Kind() == reflect.Slice && valTyp.Elem().ConvertibleTo(reflect.TypeOf(ch)) {
+		} else {
+			if _, ok := value.(*Changeset); ok {
 				ch.changes[field] = value
 				return
 			}
 		}
 	}
+
 	msg := strings.Replace(options.message, "{field}", field, 1)
 	AddError(ch, field, msg)
 }

@@ -6,7 +6,9 @@ import (
 
 // ApplyString apply a function for string value.
 func ApplyString(ch *Changeset, field string, fn func(string) string) {
-	if val, ok := ch.changes[field]; ok && val != nil && ch.types[field].Kind() == reflect.String {
-		ch.changes[field] = fn(val.(string))
+	if val, ok := ch.changes[field]; ok && val != nil {
+		if typ, ok := ch.doc.Type(field); ok && typ.Kind() == reflect.String {
+			ch.changes[field] = fn(val.(string))
+		}
 	}
 }
