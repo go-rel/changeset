@@ -4,7 +4,7 @@ package changeset
 import (
 	"reflect"
 
-	"github.com/Fs02/form/params"
+	"github.com/Fs02/changeset/params"
 )
 
 // Changeset used to cast and validate data before saving it to the database.

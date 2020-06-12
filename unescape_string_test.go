@@ -3,7 +3,7 @@ package changeset
 import (
 	"testing"
 
-	"github.com/Fs02/form/params"
+	"github.com/Fs02/changeset/params"
 	"github.com/stretchr/testify/assert"
 )
 

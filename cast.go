@@ -5,8 +5,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/Fs02/form/params"
-	"github.com/Fs02/grimoire/schema"
+	"github.com/Fs02/changeset/params"
 )
 
 // CastErrorMessage is the default error message for Cast.
@@ -62,9 +61,9 @@ func Cast(data interface{}, params params.Params, fields []string, opts ...Optio
 
 func mapSchema(data interface{}, zero bool) (map[string]interface{}, map[string]reflect.Type, bool) {
 	var (
-		fields    = schema.InferFields(data)
-		types     = schema.InferTypes(data)
-		values    = schema.InferValues(data)
+		fields    = inferFields(data)
+		types     = inferTypes(data)
+		values    = inferValues(data)
 		valuesMap = make(map[string]interface{}, len(fields))
 		typesMap  = make(map[string]reflect.Type, len(fields))
 	)
