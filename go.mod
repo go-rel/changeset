@@ -3,6 +3,7 @@ module github.com/Fs02/changeset
 go 1.13
 
 require (
+	github.com/Fs02/grimoire v1.5.0
 	github.com/Fs02/rel v0.4.0
 	github.com/azer/snakecase v0.0.0-20161028114325-c818dddafb5c
 	github.com/stretchr/testify v1.5.1
