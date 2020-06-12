@@ -30,7 +30,7 @@ func CastAssoc(ch *Changeset, field string, fn ChangeFunc, opts ...Option) {
 		sourceField = field
 	}
 
-	typ, texist := ch.doc.Type(field)
+	typ, texist := ch.types[field]
 	valid := true
 	if texist && ch.params.Exists(sourceField) {
 		if typ.Kind() == reflect.Struct {
@@ -61,11 +61,10 @@ func castOne(ch *Changeset, fieldSource string, fieldTarget string, fn ChangeFun
 
 	var innerch *Changeset
 
-	if val, exist := ch.doc.Value(fieldTarget); exist && val != nil {
+	if val, exist := ch.values[fieldTarget]; exist && val != nil {
 		innerch = fn(val, par)
 	} else {
-		targetTyp, _ := ch.doc.Type(fieldTarget)
-		innerch = fn(reflect.Zero(targetTyp).Interface(), par)
+		innerch = fn(reflect.Zero(ch.types[fieldTarget]).Interface(), par)
 	}
 
 	ch.changes[fieldTarget] = innerch
@@ -82,8 +81,7 @@ func castMany(ch *Changeset, fieldSource string, fieldTarget string, fn ChangeFu
 		return false
 	}
 
-	targetTyp, _ := ch.doc.Type(fieldTarget)
-	data := reflect.Zero(targetTyp.Elem()).Interface()
+	data := reflect.Zero(ch.types[fieldTarget].Elem()).Interface()
 
 	chs := make([]*Changeset, len(spar))
 	for i, par := range spar {

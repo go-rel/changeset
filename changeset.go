@@ -2,16 +2,18 @@
 package changeset
 
 import (
+	"reflect"
+
 	"github.com/Fs02/form/params"
-	"github.com/Fs02/rel"
 )
 
 // Changeset used to cast and validate data before saving it to the database.
 type Changeset struct {
-	doc         *rel.Document
+	errors      []error
 	params      params.Params
 	changes     map[string]interface{}
-	errors      []error
+	values      map[string]interface{}
+	types       map[string]reflect.Type
 	constraints Constraints
 	zero        bool
 }
@@ -40,11 +42,25 @@ func (changeset *Changeset) Fetch(field string) interface{} {
 		return change
 	}
 
-	val, _ := changeset.doc.Value(field)
-	return val
+	return changeset.values[field]
 }
 
 // Changes of changeset.
 func (changeset *Changeset) Changes() map[string]interface{} {
 	return changeset.changes
+}
+
+// Values of changeset.
+func (changeset *Changeset) Values() map[string]interface{} {
+	return changeset.values
+}
+
+// Types of changeset.
+func (changeset *Changeset) Types() map[string]reflect.Type {
+	return changeset.types
+}
+
+// Constraints of changeset.
+func (changeset *Changeset) Constraints() Constraints {
+	return changeset.constraints
 }

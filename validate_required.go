@@ -25,7 +25,7 @@ func ValidateRequired(ch *Changeset, fields []string, opts ...Option) {
 
 		// check values if it's not exist in changeset when changeOnly is false and changeset values are all zero value
 		if !exist && !options.changeOnly && !ch.zero {
-			val, exist = ch.doc.Value(f)
+			val, exist = ch.values[f]
 		}
 
 		str, isStr := val.(string)
