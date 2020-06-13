@@ -1,6 +1,7 @@
 package changeset
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -23,4 +24,13 @@ func TestAddError(t *testing.T) {
 	assert.NotNil(t, ch.Errors())
 	assert.Equal(t, 2, len(ch.Errors()))
 	assert.Equal(t, "field2 is not valid", ch.Errors()[1].Error())
+}
+
+func TestError_Unwrap(t *testing.T) {
+	var (
+		wrappedError = errors.New("error")
+		err          = Error{Err: wrappedError}
+	)
+
+	assert.Equal(t, wrappedError, err.Unwrap())
 }

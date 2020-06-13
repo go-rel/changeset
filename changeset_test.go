@@ -139,9 +139,6 @@ func TestChangesetApply(t *testing.T) {
 		)
 	)
 
-	userMutation.SetAssoc("transactions", transaction1Mutation, transaction2Mutation)
-	userMutation.SetAssoc("address", addressMutation)
-
 	ch := Cast(user, input, []string{"name", "age"})
 	CastAssoc(ch, "transactions", func(data interface{}, input params.Params) *Changeset {
 		ch := Cast(data, input, []string{"item", "status"})
@@ -151,6 +148,9 @@ func TestChangesetApply(t *testing.T) {
 		ch := Cast(data, input, []string{"street", "notes", "flagged"})
 		return ch
 	})
+
+	userMutation.SetAssoc("transactions", transaction1Mutation, transaction2Mutation)
+	userMutation.SetAssoc("address", addressMutation)
 
 	assert.Nil(t, ch.Error())
 	assert.Equal(t, userMutation, rel.Apply(doc, ch))
@@ -168,5 +168,37 @@ func TestChangesetApply(t *testing.T) {
 			Notes:   "Brown fox jumps",
 			Flagged: &flagged,
 		},
+	}, user)
+}
+
+func TestChangesetApply_constraint(t *testing.T) {
+	var (
+		user  User
+		now   = time.Now().Truncate(time.Second)
+		doc   = rel.NewDocument(&user)
+		input = params.Map{
+			"name": "Luffy",
+			"age":  20,
+		}
+		userMutation = rel.Apply(rel.NewDocument(&User{}),
+			rel.Set("name", "Luffy"),
+			rel.Set("age", 20),
+			rel.Set("created_at", now),
+			rel.Set("updated_at", now),
+		)
+	)
+
+	ch := Cast(user, input, []string{"name", "age"})
+	UniqueConstraint(ch, "name")
+	mut := rel.Apply(doc, ch)
+
+	assert.Nil(t, ch.Error())
+	assert.Equal(t, userMutation.Mutates, mut.Mutates)
+	assert.NotNil(t, mut.ErrorFunc)
+	assert.Equal(t, User{
+		Name:      "Luffy",
+		Age:       20,
+		CreatedAt: now,
+		UpdatedAt: now,
 	}, user)
 }

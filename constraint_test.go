@@ -15,7 +15,7 @@ func TestConstraint_GetError(t *testing.T) {
 
 	tests := []struct {
 		name     string
-		err      rel.ConstraintError
+		err      error
 		expected error
 	}{
 		{
@@ -42,6 +42,11 @@ func TestConstraint_GetError(t *testing.T) {
 			name:     "undefined fk",
 			err:      rel.ConstraintError{Key: "other_id_ibfk1", Type: rel.ForeignKeyConstraint},
 			expected: rel.ConstraintError{Key: "other_id_ibfk1", Type: rel.ForeignKeyConstraint},
+		},
+		{
+			name:     "other error",
+			err:      rel.NotFoundError{},
+			expected: rel.NotFoundError{},
 		},
 	}
 

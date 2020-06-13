@@ -103,6 +103,11 @@ func (c *Changeset) Apply(doc *rel.Document, mut *rel.Mutation) {
 	if doc.Flag(rel.HasUpdatedAt) {
 		c.set(doc, mut, "updated_at", now)
 	}
+
+	// add error func
+	if len(c.constraints) > 0 {
+		mut.ErrorFunc = c.constraints.GetError
+	}
 }
 
 func (c *Changeset) set(doc *rel.Document, mut *rel.Mutation, field string, value interface{}) {
