@@ -35,7 +35,12 @@ func (constraints Constraints) GetError(err rel.ConstraintError) error {
 				continue
 			}
 
-			return NewErrorWithCode(c.Message, c.Field, c.Code)
+			return Error{
+				Message: c.Message,
+				Field:   c.Field,
+				Code:    c.Code,
+				Err:     err,
+			}
 		}
 	}
 

@@ -21,17 +21,17 @@ func TestConstraint_GetError(t *testing.T) {
 		{
 			name:     "unique",
 			err:      rel.ConstraintError{Key: "slug_unique_index", Type: rel.UniqueConstraint},
-			expected: NewError("slug has already been taken", "slug"),
+			expected: Error{Message: "slug has already been taken", Field: "slug", Err: rel.ConstraintError{Key: "slug_unique_index", Type: rel.UniqueConstraint}},
 		},
 		{
 			name:     "fk",
 			err:      rel.ConstraintError{Key: "user_id_ibfk1", Type: rel.ForeignKeyConstraint},
-			expected: NewError("does not exist", "user_id"),
+			expected: Error{Message: "does not exist", Field: "user_id", Err: rel.ConstraintError{Key: "user_id_ibfk1", Type: rel.ForeignKeyConstraint}},
 		},
 		{
 			name:     "check",
 			err:      rel.ConstraintError{Key: "state_check", Type: rel.CheckConstraint},
-			expected: NewError("state is invalid", "state"),
+			expected: Error{Message: "state is invalid", Field: "state", Err: rel.ConstraintError{Key: "state_check", Type: rel.CheckConstraint}},
 		},
 		{
 			name:     "undefined unique",
