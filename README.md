@@ -80,4 +80,4 @@ func main() {
 
 ## License
 
-Released under the [MIT License](https://github.com/Fs02/grimoire/blob/master/LICENSE)
+Released under the [MIT License](https://github.com/Fs02/changeset/blob/master/LICENSE)
