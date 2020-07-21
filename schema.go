@@ -54,19 +54,29 @@ func inferFields(record interface{}) map[string]int {
 }
 
 func inferFieldName(sf reflect.StructField) string {
-	if tag := sf.Tag.Get("db"); tag != "" {
-		name := strings.Split(tag, ",")[0]
+	if name, skip := inferFieldNameFromTag(sf, "ch"); name != "" || skip {
+		return name
+	}
 
-		if name == "-" {
-			return ""
-		}
-
-		if name != "" {
-			return name
-		}
+	if name, skip := inferFieldNameFromTag(sf, "db"); name != "" || skip {
+		return name
 	}
 
 	return snakecase.SnakeCase(sf.Name)
+}
+
+func inferFieldNameFromTag(sf reflect.StructField, tag string) (string, bool) {
+	var name string
+
+	if v := sf.Tag.Get(tag); v != "" {
+		name = strings.Split(v, ",")[0]
+
+		if name == "-" {
+			return "", true
+		}
+	}
+
+	return name, false
 }
 
 func inferFieldMapping(record interface{}) map[string]int {

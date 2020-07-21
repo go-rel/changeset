@@ -40,6 +40,9 @@ func TestInferFields(t *testing.T) {
 			C []byte     `db:",primary"`
 			D bool       `db:"D"`
 			E []*float64 `db:"-"`
+			F int        `db:"not_f" ch:"f"`
+			G int        `db:"-" ch:"g"`
+			H bool       `ch:"h"`
 		}{}
 		rt       = reflectTypePtr(record)
 		expected = map[string]int{
@@ -47,6 +50,9 @@ func TestInferFields(t *testing.T) {
 			"b": 1,
 			"c": 2,
 			"D": 3,
+			"f": 4,
+			"g": 5,
+			"h": 6,
 		}
 	)
 
