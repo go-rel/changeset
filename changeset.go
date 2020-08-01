@@ -2,6 +2,7 @@
 package changeset
 
 import (
+	"database/sql"
 	"reflect"
 	"time"
 
@@ -86,7 +87,7 @@ func (c *Changeset) Apply(doc *rel.Document, mut *rel.Mutation) {
 				c.applyAssocMany(doc, field, mut, v)
 			}
 		default:
-			if field != pField {
+			if field != pField && v != nil && scannable(c.types[field]) {
 				c.set(doc, mut, field, v)
 			}
 		}
@@ -141,4 +142,20 @@ func (c *Changeset) applyAssocMany(doc *rel.Document, field string, mut *rel.Mut
 	}
 
 	mut.SetAssoc(field, muts...)
+}
+
+var (
+	rtTime    = reflect.TypeOf(time.Time{})
+	rtScanner = reflect.TypeOf((*sql.Scanner)(nil)).Elem()
+)
+
+func scannable(rt reflect.Type) bool {
+	var (
+		kind = rt.Kind()
+	)
+
+	return !((kind == reflect.Struct || kind == reflect.Slice || kind == reflect.Array) &&
+		kind != reflect.Uint8 &&
+		!rt.Implements(rtScanner) &&
+		!rt.Implements(rtTime))
 }
