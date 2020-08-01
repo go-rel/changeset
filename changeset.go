@@ -157,5 +157,5 @@ func scannable(rt reflect.Type) bool {
 	return !((kind == reflect.Struct || kind == reflect.Slice || kind == reflect.Array) &&
 		kind != reflect.Uint8 &&
 		!rt.Implements(rtScanner) &&
-		!rt.Implements(rtTime))
+		!rt.ConvertibleTo(rtTime))
 }
