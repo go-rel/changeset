@@ -6,8 +6,8 @@ import (
 	"reflect"
 	"time"
 
-	"github.com/Fs02/changeset/params"
 	"github.com/Fs02/rel"
+	"github.com/go-rel/changeset/params"
 )
 
 // Changeset used to cast and validate data before saving it to the database.

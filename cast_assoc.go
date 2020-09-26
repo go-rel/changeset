@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Fs02/changeset/params"
+	"github.com/go-rel/changeset/params"
 )
 
 // CastAssocErrorMessage is the default error message for CastAssoc when its invalid.

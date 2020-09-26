@@ -1,4 +1,4 @@
-module github.com/Fs02/changeset
+module github.com/go-rel/changeset
 
 go 1.13
 
