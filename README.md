@@ -1,16 +1,16 @@
 # changeset
 
-[![GoDoc](https://godoc.org/github.com/Fs02/changeset?status.svg)](https://godoc.org/github.com/Fs02/changeset) 
-[![Build Status](https://travis-ci.org/Fs02/changeset.svg?branch=master)](https://travis-ci.org/Fs02/changeset) 
-[![Go Report Card](https://goreportcard.com/badge/github.com/Fs02/changeset)](https://goreportcard.com/report/github.com/Fs02/changeset)
-[![Gocover](https://gocover.io/_badge/github.com/Fs02/changeset)](https://gocover.io/github.com/Fs02/changeset)
+[![GoDoc](https://godoc.org/github.com/go-rel/changeset?status.svg)](https://godoc.org/github.com/go-rel/changeset) 
+[![Build Status](https://travis-ci.org/go-rel/changeset.svg?branch=master)](https://travis-ci.org/go-rel/changeset) 
+[![Go Report Card](https://goreportcard.com/badge/github.com/go-rel/changeset)](https://goreportcard.com/report/github.com/go-rel/changeset)
+[![Gocover](https://gocover.io/_badge/github.com/go-rel/changeset)](https://gocover.io/github.com/go-rel/changeset)
 
 Changeset mutator for [REL](https://github.com/Fs02/rel). Changesets allow filtering, casting, validation and definition of constraints when manipulating structs.
 
 ## Install
 
 ```bash
-go get github.com/Fs02/changeset
+go get github.com/go-rel/changeset
 ```
 
 ## Example
@@ -23,8 +23,8 @@ import (
 
 	"github.com/Fs02/rel"
 	"github.com/Fs02/rel/adapter/mysql"
-	"github.com/Fs02/changeset"
-	"github.com/Fs02/changeset/params"
+	"github.com/go-rel/changeset"
+	"github.com/go-rel/changeset/params"
 )
 
 type Product struct {
@@ -80,4 +80,4 @@ func main() {
 
 ## License
 
-Released under the [MIT License](https://github.com/Fs02/changeset/blob/master/LICENSE)
+Released under the [MIT License](https://github.com/go-rel/changeset/blob/master/LICENSE)

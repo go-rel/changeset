@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/Fs02/changeset/params"
+	"github.com/go-rel/changeset/params"
 )
 
 // CastErrorMessage is the default error message for Cast.
