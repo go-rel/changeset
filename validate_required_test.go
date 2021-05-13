@@ -1,7 +1,6 @@
 package changeset
 
 import (
-	"fmt"
 	"strings"
 	"testing"
 	"time"
@@ -90,7 +89,6 @@ func TestValidateRequired_cast_error(t *testing.T) {
 	}
 
 	ct := customType{Field1: "field1"}
-	fmt.Println(ct.FieldTime)
 	ch := Cast(ct, params.Map{"field2": "field2"}, []string{"field1", "field2", "field3", "field_time"})
 	ValidateRequired(ch, []string{"field1", "field2", "field3", "field_time"})
 
