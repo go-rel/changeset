@@ -3,7 +3,7 @@
 [![GoDoc](https://godoc.org/github.com/go-rel/changeset?status.svg)](https://godoc.org/github.com/go-rel/changeset) 
 [![Build Status](https://travis-ci.org/go-rel/changeset.svg?branch=master)](https://travis-ci.org/go-rel/changeset) 
 [![Go Report Card](https://goreportcard.com/badge/github.com/go-rel/changeset)](https://goreportcard.com/report/github.com/go-rel/changeset)
-[![Gocover](https://gocover.io/_badge/github.com/go-rel/changeset)](https://gocover.io/github.com/go-rel/changeset)
+[![codecov](https://codecov.io/gh/go-rel/changeset/branch/master/graph/badge.svg?token=LCJN4KR9N8)](https://codecov.io/gh/go-rel/changeset)
 
 Changeset mutator for [REL](https://github.com/go-rel/rel). Changesets allow filtering, casting, validation and definition of constraints when manipulating structs.
 
