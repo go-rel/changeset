@@ -4,7 +4,7 @@ package changeset
 import (
 	"strings"
 
-	"github.com/Fs02/rel"
+	"github.com/go-rel/rel"
 )
 
 // Constraint defines information to infer constraint error.

@@ -5,7 +5,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/go-rel/changeset)](https://goreportcard.com/report/github.com/go-rel/changeset)
 [![Gocover](https://gocover.io/_badge/github.com/go-rel/changeset)](https://gocover.io/github.com/go-rel/changeset)
 
-Changeset mutator for [REL](https://github.com/Fs02/rel). Changesets allow filtering, casting, validation and definition of constraints when manipulating structs.
+Changeset mutator for [REL](https://github.com/go-rel/rel). Changesets allow filtering, casting, validation and definition of constraints when manipulating structs.
 
 ## Install
 
@@ -21,8 +21,8 @@ package main
 import (
 	"time"
 
-	"github.com/Fs02/rel"
-	"github.com/Fs02/rel/adapter/mysql"
+	"github.com/go-rel/rel"
+	"github.com/go-rel/rel/adapter/mysql"
 	"github.com/go-rel/changeset"
 	"github.com/go-rel/changeset/params"
 )
