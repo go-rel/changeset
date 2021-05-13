@@ -3,7 +3,7 @@ package changeset
 import (
 	"strings"
 
-	"github.com/Fs02/rel"
+	"github.com/go-rel/rel"
 )
 
 // CheckConstraintMessage is the default error message for CheckConstraint.

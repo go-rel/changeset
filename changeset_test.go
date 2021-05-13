@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Fs02/rel"
 	"github.com/go-rel/changeset/params"
+	"github.com/go-rel/rel"
 	"github.com/stretchr/testify/assert"
 )
 
