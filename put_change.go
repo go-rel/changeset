@@ -16,9 +16,14 @@ func PutChange(ch *Changeset, field string, value interface{}, opts ...Option) {
 	options.apply(opts)
 
 	if typ, exist := ch.types[field]; exist {
-		if value != (interface{})(nil) {
+		if value != nil {
 			valTyp := reflect.TypeOf(value)
 			if valTyp.Kind() == reflect.Ptr {
+				if reflect.ValueOf(value).IsNil() {
+					ch.changes[field] = nil
+					return
+				}
+
 				valTyp = valTyp.Elem()
 			}
 
@@ -27,7 +32,7 @@ func PutChange(ch *Changeset, field string, value interface{}, opts ...Option) {
 				return
 			}
 		} else {
-			ch.changes[field] = reflect.Zero(reflect.PtrTo(typ)).Interface()
+			ch.changes[field] = value
 			return
 		}
 	}
