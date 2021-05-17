@@ -19,6 +19,7 @@ type User struct {
 	Address      Address
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
+	DeletedAt    *time.Time
 }
 
 type Transaction struct {
@@ -123,6 +124,7 @@ func TestChangesetApply(t *testing.T) {
 			rel.Set("age", 20),
 			rel.Set("created_at", now),
 			rel.Set("updated_at", now),
+			rel.Set("deleted_at", nil),
 		)
 		transaction1Mutation = rel.Apply(rel.NewDocument(&Transaction{}),
 			rel.Set("item", "Sword"),
@@ -148,6 +150,8 @@ func TestChangesetApply(t *testing.T) {
 		ch := Cast(data, input, []string{"street", "notes", "flagged"})
 		return ch
 	})
+
+	PutChange(ch, "deleted_at", nil)
 
 	userMutation.SetAssoc("transactions", transaction1Mutation, transaction2Mutation)
 	userMutation.SetAssoc("address", addressMutation)
