@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/go-rel/changeset/params"
+	"github.com/go-rel/rel"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -40,8 +41,30 @@ func TestPutChange(t *testing.T) {
 	assert.Equal(t, 10, ch.Changes()["field1"])
 }
 
+func TestPutChange_ptr(t *testing.T) {
+	var (
+		nullable = false
+		a        struct {
+			ID       int
+			Nullable *bool
+		}
+	)
+
+	ch := Cast(a, params.Map{}, []string{})
+	PutChange(ch, "nullable", &nullable)
+
+	assert.Nil(t, ch.Error())
+	assert.Equal(t, &nullable, ch.Changes()["nullable"])
+
+	assert.NotPanics(t, func() {
+		rel.Apply(rel.NewDocument(&a), ch)
+		assert.Equal(t, &nullable, a.Nullable)
+	})
+}
+
 func TestPutChange_nil(t *testing.T) {
 	var a struct {
+		ID       int
 		Nullable *bool
 	}
 
@@ -49,11 +72,17 @@ func TestPutChange_nil(t *testing.T) {
 	PutChange(ch, "nullable", nil)
 
 	assert.Nil(t, ch.Error())
-	assert.Equal(t, (*bool)(nil), ch.Changes()["nullable"])
+	assert.Equal(t, nil, ch.Changes()["nullable"])
+
+	assert.NotPanics(t, func() {
+		rel.Apply(rel.NewDocument(&a), ch)
+		assert.Nil(t, a.Nullable)
+	})
 }
 
 func TestPutChange_typedNil(t *testing.T) {
 	var a struct {
+		ID       int
 		Nullable *bool
 	}
 
@@ -61,5 +90,10 @@ func TestPutChange_typedNil(t *testing.T) {
 	PutChange(ch, "nullable", (*bool)(nil))
 
 	assert.Nil(t, ch.Error())
-	assert.Equal(t, (*bool)(nil), ch.Changes()["nullable"])
+	assert.Equal(t, nil, ch.Changes()["nullable"])
+
+	assert.NotPanics(t, func() {
+		rel.Apply(rel.NewDocument(&a), ch)
+		assert.Nil(t, a.Nullable)
+	})
 }
