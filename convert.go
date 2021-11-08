@@ -5,6 +5,6 @@ func Convert(data interface{}) *Changeset {
 	ch := &Changeset{}
 	ch.values = make(map[string]interface{})
 	ch.changes, ch.types, _ = mapSchema(data, false)
-
+	ch.ignorePrimary = true // set ignore primary to prevent implicit PK change
 	return ch
 }

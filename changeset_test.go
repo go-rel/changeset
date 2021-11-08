@@ -250,3 +250,40 @@ func TestChangesetApply_MutablePK(t *testing.T) {
 		UpdatedAt: now,
 	}, user)
 }
+
+func TestChangesetApply_MutablePK_FromConvert(t *testing.T) {
+	var (
+		user  UUIDUser
+		now   = time.Now().Truncate(time.Second)
+		doc   = rel.NewDocument(&user)
+		input = struct {
+			UUID string
+			Name string
+			Age  int
+		}{
+			UUID: "3a90fc96-6cff-4914-9ce8-01c9e607b28b",
+			Name: "Luffy",
+			Age:  20,
+		}
+		userMutation = rel.Apply(rel.NewDocument(&UUIDUser{}),
+			rel.Set("name", "Luffy"),
+			rel.Set("age", 20),
+			rel.Set("created_at", now),
+			rel.Set("updated_at", now),
+		)
+	)
+
+	ch := Convert(input)
+	UniqueConstraint(ch, "name")
+	mut := rel.Apply(doc, ch)
+
+	assert.Nil(t, ch.Error())
+	assert.Equal(t, userMutation.Mutates, mut.Mutates)
+	assert.NotNil(t, mut.ErrorFunc)
+	assert.Equal(t, UUIDUser{
+		Name:      "Luffy",
+		Age:       20,
+		CreatedAt: now,
+		UpdatedAt: now,
+	}, user)
+}

@@ -12,13 +12,14 @@ import (
 
 // Changeset used to cast and validate data before saving it to the database.
 type Changeset struct {
-	errors      []error
-	params      params.Params
-	changes     map[string]interface{}
-	values      map[string]interface{}
-	types       map[string]reflect.Type
-	constraints Constraints
-	zero        bool
+	errors        []error
+	params        params.Params
+	changes       map[string]interface{}
+	values        map[string]interface{}
+	types         map[string]reflect.Type
+	constraints   Constraints
+	zero          bool
+	ignorePrimary bool
 }
 
 // Errors of changeset.
@@ -96,9 +97,14 @@ func (c *Changeset) Apply(doc *rel.Document, mut *rel.Mutation) {
 				c.applyAssocMany(doc, field, mut, v)
 			}
 		default:
-			if (mutablePField || field != pField) && scannable(c.types[field]) {
+			if pField != field && scannable(c.types[field]) { //if not PK - try to set
 				c.set(doc, mut, field, v)
+			} else if scannable(c.types[field]) { // if settable PK - check if not serial and was set manually
+				if mutablePField && !c.ignorePrimary {
+					c.set(doc, mut, field, v)
+				}
 			}
+
 		}
 	}
 
