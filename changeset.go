@@ -79,7 +79,6 @@ func (c *Changeset) Apply(doc *rel.Document, mut *rel.Mutation) {
 
 	switch c.values[pField].(type) {
 	case int:
-		break
 	default:
 		if c.changes[pField] != nil {
 			mutablePField = true
