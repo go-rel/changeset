@@ -8,7 +8,6 @@ func Change(schema interface{}, changes ...map[string]interface{}) *Changeset {
 
 	if len(changes) > 0 {
 		ch.changes = changes[0]
-		ch.ignorePrimary = true
 	} else {
 		ch.changes = make(map[string]interface{})
 	}
