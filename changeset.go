@@ -73,18 +73,9 @@ func (c Changeset) Constraints() Constraints {
 // Apply mutation.
 func (c *Changeset) Apply(doc *rel.Document, mut *rel.Mutation) {
 	var (
-		pField        = doc.PrimaryField()
-		mutablePField = false
-		now           = time.Now().Truncate(time.Second)
+		pField = doc.PrimaryField()
+		now    = time.Now().Truncate(time.Second)
 	)
-
-	switch c.values[pField].(type) {
-	case int:
-	default:
-		if c.changes[pField] != nil {
-			mutablePField = true
-		}
-	}
 
 	for field, value := range c.changes {
 		switch v := value.(type) {
@@ -97,14 +88,9 @@ func (c *Changeset) Apply(doc *rel.Document, mut *rel.Mutation) {
 				c.applyAssocMany(doc, field, mut, v)
 			}
 		default:
-			if pField != field && scannable(c.types[field]) { //if not PK - try to set
+			if (pField != field || pField == field && !c.ignorePrimary) && scannable(c.types[field]) { //if not PK - try to set
 				c.set(doc, mut, field, v)
-			} else if scannable(c.types[field]) { // if settable PK - check if not serial and was set manually
-				if mutablePField && !c.ignorePrimary {
-					c.set(doc, mut, field, v)
-				}
 			}
-
 		}
 	}
 
