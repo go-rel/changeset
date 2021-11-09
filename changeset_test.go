@@ -299,6 +299,7 @@ func TestChangesetApply_MutablePK_FromChange(t *testing.T) {
 			"age":  20,
 		}
 		userMutation = rel.Apply(rel.NewDocument(&UUIDUser{}),
+			rel.Set("uuid", "3a90fc96-6cff-4914-9ce8-01c9e607b28b"),
 			rel.Set("name", "Luffy"),
 			rel.Set("age", 20),
 			rel.Set("created_at", now),
@@ -314,6 +315,7 @@ func TestChangesetApply_MutablePK_FromChange(t *testing.T) {
 	assert.Equal(t, userMutation.Mutates, mut.Mutates)
 	assert.NotNil(t, mut.ErrorFunc)
 	assert.Equal(t, UUIDUser{
+		UUID:      "3a90fc96-6cff-4914-9ce8-01c9e607b28b",
 		Name:      "Luffy",
 		Age:       20,
 		CreatedAt: now,
