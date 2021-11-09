@@ -88,7 +88,7 @@ func (c *Changeset) Apply(doc *rel.Document, mut *rel.Mutation) {
 				c.applyAssocMany(doc, field, mut, v)
 			}
 		default:
-			if (pField != field || pField == field && !c.ignorePrimary) && scannable(c.types[field]) { //if not PK - try to set
+			if (pField != field || pField == field && !c.ignorePrimary) && scannable(c.types[field]) {
 				c.set(doc, mut, field, v)
 			}
 		}

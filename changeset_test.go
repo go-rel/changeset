@@ -216,7 +216,8 @@ func TestChangesetApply_constraint(t *testing.T) {
 	}, user)
 }
 
-func TestChangesetApply_MutablePK(t *testing.T) {
+//If PK is explicitly caseted then it should be updated
+func TestChangesetApply_updatePK(t *testing.T) {
 	var (
 		user  UUIDUser
 		now   = time.Now().Truncate(time.Second)
@@ -251,7 +252,8 @@ func TestChangesetApply_MutablePK(t *testing.T) {
 	}, user)
 }
 
-func TestChangesetApply_MutablePK_FromConvert(t *testing.T) {
+//Covert function should ignore the PK updates for safety reasons
+func TestChangesetApply_updatePK_fromConvert(t *testing.T) {
 	var (
 		user  UUIDUser
 		now   = time.Now().Truncate(time.Second)
@@ -288,7 +290,8 @@ func TestChangesetApply_MutablePK_FromConvert(t *testing.T) {
 	}, user)
 }
 
-func TestChangesetApply_MutablePK_FromChange(t *testing.T) {
+//If PK is explicitly set in the Change function it should be updated
+func TestChangesetApply_updatePK_fromChange(t *testing.T) {
 	var (
 		user  UUIDUser
 		now   = time.Now().Truncate(time.Second)
