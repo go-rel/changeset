@@ -22,6 +22,15 @@ type User struct {
 	DeletedAt    *time.Time
 }
 
+type UUIDUser struct {
+	UUID      string `db:"uuid,primary"`
+	Name      string
+	Age       int
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt *time.Time
+}
+
 type Transaction struct {
 	ID      int
 	Item    string
@@ -200,6 +209,116 @@ func TestChangesetApply_constraint(t *testing.T) {
 	assert.Equal(t, userMutation.Mutates, mut.Mutates)
 	assert.NotNil(t, mut.ErrorFunc)
 	assert.Equal(t, User{
+		Name:      "Luffy",
+		Age:       20,
+		CreatedAt: now,
+		UpdatedAt: now,
+	}, user)
+}
+
+//If PK is explicitly caseted then it should be updated
+func TestChangesetApply_updatePK(t *testing.T) {
+	var (
+		user  UUIDUser
+		now   = time.Now().Truncate(time.Second)
+		doc   = rel.NewDocument(&user)
+		input = params.Map{
+			"uuid": "3a90fc96-6cff-4914-9ce8-01c9e607b28b",
+			"name": "Luffy",
+			"age":  20,
+		}
+		userMutation = rel.Apply(rel.NewDocument(&UUIDUser{}),
+			rel.Set("uuid", "3a90fc96-6cff-4914-9ce8-01c9e607b28b"),
+			rel.Set("name", "Luffy"),
+			rel.Set("age", 20),
+			rel.Set("created_at", now),
+			rel.Set("updated_at", now),
+		)
+	)
+
+	ch := Cast(user, input, []string{"name", "age", "uuid"})
+	UniqueConstraint(ch, "name")
+	mut := rel.Apply(doc, ch)
+
+	assert.Nil(t, ch.Error())
+	assert.Equal(t, userMutation.Mutates, mut.Mutates)
+	assert.NotNil(t, mut.ErrorFunc)
+	assert.Equal(t, UUIDUser{
+		UUID:      "3a90fc96-6cff-4914-9ce8-01c9e607b28b",
+		Name:      "Luffy",
+		Age:       20,
+		CreatedAt: now,
+		UpdatedAt: now,
+	}, user)
+}
+
+//Covert function should ignore the PK updates for safety reasons
+func TestChangesetApply_updatePK_fromConvert(t *testing.T) {
+	var (
+		user  UUIDUser
+		now   = time.Now().Truncate(time.Second)
+		doc   = rel.NewDocument(&user)
+		input = struct {
+			UUID string
+			Name string
+			Age  int
+		}{
+			UUID: "3a90fc96-6cff-4914-9ce8-01c9e607b28b",
+			Name: "Luffy",
+			Age:  20,
+		}
+		userMutation = rel.Apply(rel.NewDocument(&UUIDUser{}),
+			rel.Set("name", "Luffy"),
+			rel.Set("age", 20),
+			rel.Set("created_at", now),
+			rel.Set("updated_at", now),
+		)
+	)
+
+	ch := Convert(input)
+	UniqueConstraint(ch, "name")
+	mut := rel.Apply(doc, ch)
+
+	assert.Nil(t, ch.Error())
+	assert.Equal(t, userMutation.Mutates, mut.Mutates)
+	assert.NotNil(t, mut.ErrorFunc)
+	assert.Equal(t, UUIDUser{
+		Name:      "Luffy",
+		Age:       20,
+		CreatedAt: now,
+		UpdatedAt: now,
+	}, user)
+}
+
+//If PK is explicitly set in the Change function it should be updated
+func TestChangesetApply_updatePK_fromChange(t *testing.T) {
+	var (
+		user  UUIDUser
+		now   = time.Now().Truncate(time.Second)
+		doc   = rel.NewDocument(&user)
+		input = map[string]interface{}{
+			"uuid": "3a90fc96-6cff-4914-9ce8-01c9e607b28b",
+			"name": "Luffy",
+			"age":  20,
+		}
+		userMutation = rel.Apply(rel.NewDocument(&UUIDUser{}),
+			rel.Set("uuid", "3a90fc96-6cff-4914-9ce8-01c9e607b28b"),
+			rel.Set("name", "Luffy"),
+			rel.Set("age", 20),
+			rel.Set("created_at", now),
+			rel.Set("updated_at", now),
+		)
+	)
+
+	ch := Change(user, input)
+	UniqueConstraint(ch, "name")
+	mut := rel.Apply(doc, ch)
+
+	assert.Nil(t, ch.Error())
+	assert.Equal(t, userMutation.Mutates, mut.Mutates)
+	assert.NotNil(t, mut.ErrorFunc)
+	assert.Equal(t, UUIDUser{
+		UUID:      "3a90fc96-6cff-4914-9ce8-01c9e607b28b",
 		Name:      "Luffy",
 		Age:       20,
 		CreatedAt: now,
