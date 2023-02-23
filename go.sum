@@ -1,5 +1,5 @@
-github.com/azer/snakecase v0.0.0-20161028114325-c818dddafb5c h1:7zL0ljVI6ads5EFvx+Oq+uompnFBMJqtbuHvyobbJ1Q=
-github.com/azer/snakecase v0.0.0-20161028114325-c818dddafb5c/go.mod h1:iApMeoHF0YlMPzCwqH/d59E3w2s8SeO4rGK+iGClS8Y=
+github.com/azer/snakecase v1.0.0 h1:Gr9hfYVh6U96aUoGEbJK400H9KTiz6yCIYk3EN8n9hY=
+github.com/azer/snakecase v1.0.0/go.mod h1:iApMeoHF0YlMPzCwqH/d59E3w2s8SeO4rGK+iGClS8Y=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
