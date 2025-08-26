@@ -1,12 +1,13 @@
 module github.com/go-rel/changeset
 
-go 1.21
+go 1.23.0
+
 toolchain go1.24.1
 
 require (
 	github.com/azer/snakecase v1.0.0
 	github.com/go-rel/rel v0.42.0
-	github.com/stretchr/testify v1.10.0
+	github.com/stretchr/testify v1.11.0
 	github.com/tidwall/gjson v1.18.0
 )
 
