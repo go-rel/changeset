@@ -8,7 +8,7 @@ require (
 	github.com/azer/snakecase v1.0.0
 	github.com/go-rel/rel v0.42.0
 	github.com/stretchr/testify v1.11.0
-	github.com/tidwall/gjson v1.18.0
+	github.com/tidwall/gjson v1.19.0
 )
 
 require (
